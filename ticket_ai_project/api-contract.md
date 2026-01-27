@@ -37,7 +37,7 @@ ServiceNow and the AI-based ticket automation service.
 
 ---
 
-##📤 Response Payload (Success)
+## 📤 Response Payload (Success)
 
 {
   "team": "IT Support",
@@ -65,7 +65,7 @@ ServiceNow and the AI-based ticket automation service.
 
 ---
 
-##⚠️ Error Handling Rules
+## ⚠️ Error Handling Rules
 
 | Scenario          | Handling                |
 | ----------------- | ----------------------- |

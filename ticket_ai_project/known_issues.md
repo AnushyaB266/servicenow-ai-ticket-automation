@@ -58,7 +58,7 @@ When a known issue is detected:
 
 ---
 
-##⚠️ Fallback Handling
+## ⚠️ Fallback Handling
 
 If no known issue is detected:
 
@@ -68,7 +68,7 @@ Manual resolution is expected
 
 ---
 
-##🚀 Future Enhancements
+## 🚀 Future Enhancements
 
 Expand known issues using historical resolution data
 

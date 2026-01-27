@@ -1,1 +1,0 @@
-# servicenow-ai-ticket-automation

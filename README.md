@@ -1,8 +1,8 @@
-ServiceNow ↔ AI Ticket Auto Assignment & Auto Resolution
+## ServiceNow ↔ AI Ticket Auto Assignment & Auto Resolution
 
 Using Machine Learning + Flask REST API + Business Rules
 
-1. Objective
+## 1. Objective
 
 Integrate ServiceNow with an AI-based ticket classification and resolution engine so that:
 
@@ -13,7 +13,7 @@ Integrate ServiceNow with an AI-based ticket classification and resolution engin
 ● Known issues are auto-resolved
 ● Resolution details are updated in ServiceNow
 
-2. Prerequisites
+## 2. Prerequisites
 
 Before starting, ensure:
 
@@ -37,12 +37,12 @@ Historical incident dataset (tickets.csv)
 
 Ngrok installed (for exposing local API)
 
-3. AI Model Training (Machine Learning)
+## 3. AI Model Training (Machine Learning)
 Objective
 
 Train an NLP-based model to classify incidents based on description text.
 
-Steps
+**Steps**
 
 Navigate to project directory
 
@@ -58,10 +58,10 @@ Model Logic
 ● Trained on historical ticket descriptions
 ● Outputs a serialized model (model.pkl)
 
-Output
+**Output**
 ✅ AI model trained and saved as model.pkl
 
-4. Flask REST API Creation
+## 4. Flask REST API Creation
 Objective
 
 Expose AI model predictions via REST API.
@@ -76,7 +76,7 @@ Method: POST
 
 Input: Incident description
 
-Output:
+**Output:**
 
 Predicted team
 
@@ -87,32 +87,35 @@ Resolution text (if available)
 Run API
 python app.py
 
-Expected Output
+**Expected Output**
 * Running on http://127.0.0.1:5000
 * Debug mode: on
 
-5. Known Issue Detection Logic
+## 5. Known Issue Detection Logic
 Purpose
 
 Automatically resolve recurring issues.
 
-Example Rules
-Keyword	Resolution
-password	Reset password from self-service portal
-vpn	Restart VPN service
-email	Clear Outlook cache and restart
+**Example Rules**
 
-If keyword matches:
+| Keyword  | Resolution                              |
+| -------- | --------------------------------------- |
+| password | Reset password from self-service portal |
+| vpn      | Restart VPN service                     |
+| email    | Clear Outlook cache and restart         |
+
+
+**If keyword matches:**
 ● Incident is auto-resolved
 ● Resolution notes populated
 
-6. API Testing (Local)
+## 6. API Testing (Local)
 CURL Test
 curl -X POST http://127.0.0.1:5000/predict \
 -H "Content-Type: application/json" \
 -d "{\"description\":\"Forgot password not able to login\"}"
 
-Expected Response
+**Expected Response**
 {
   "known_issue": true,
   "resolution": "Reset password from self-service portal",
@@ -122,7 +125,7 @@ Expected Response
 
 Note: Browser access will return Method Not Allowed (POST-only API).
 
-7. Expose API Using Ngrok
+## 7. Expose API Using Ngrok
 Command
 ngrok http 5000
 
@@ -132,7 +135,7 @@ https://xxxx.ngrok-free.dev/predict
 
 This URL is used by ServiceNow.
 
-8. Create Outbound REST Message in ServiceNow
+## 8. Create Outbound REST Message in ServiceNow
 Navigation
 
 System Web Services → Outbound → REST Message → New
@@ -144,7 +147,7 @@ REST Message Details
 
 Save the record.
 
-9. Create HTTP Method
+## 9. Create HTTP Method
 
 Inside REST Message:
 
@@ -152,10 +155,15 @@ Inside REST Message:
 ● HTTP Method: POST
 ● Endpoint: (leave empty – inherited)
 
-10. Configure HTTP Headers
-Name	Value
-Content-Type	application/json
-11. Test REST Message (Scripts – Background)
+## 10. Configure HTTP Headers
+
+| Name         | Value            |
+| ------------ | ---------------- |
+| Content-Type | application/json |
+
+
+## 11. Test REST Message (Scripts – Background)
+
 var r = new sn_ws.RESTMessageV2('AI Ticket Router', 'default');
 var body = {
   "description": "Forgot password not able to login"
@@ -168,7 +176,7 @@ var response = r.execute();
 gs.print("Status: " + response.getStatusCode());
 gs.print("Response: " + response.getBody());
 
-Expected Output
+**Expected Output**
 Status: 200
 Response:
 {
@@ -177,14 +185,16 @@ Response:
   "team": "IT Support"
 }
 
-12. Assignment Group Configuration
-Support Group Sys IDs
-Team	Sys ID
-Network Team	db8ff69383523210710ef796feaad30f
-Desktop Support	64cf7e9383523210710ef796feaad39e
-Messaging Team	b4bffa9383523210710ef796feaad357
-IT Support	39af7a9383523210710ef796feaad35a
-13. Create Business Rule
+## 12. Assignment Group Configuration
+
+| Team            | Sys ID                           |
+| --------------- | -------------------------------- |
+| Network Team    | db8ff69383523210710ef796feaad30f |
+| Desktop Support | 64cf7e9383523210710ef796feaad39e |
+| Messaging Team  | b4bffa9383523210710ef796feaad357 |
+| IT Support      | 39af7a9383523210710ef796feaad35a |
+
+## 13. Create Business Rule
 Navigation
 
 System Definition → Business Rules → New
@@ -196,7 +206,7 @@ Configuration
 ● When: After Insert
 ● Advanced: ✅
 
-14. Business Rule Logic (Server-side)
+## 14. Business Rule Logic (Server-side)
 Core Responsibilities
 
 ● Call AI REST API
@@ -215,7 +225,7 @@ Resolution notes & close code populated
 
 Fallback assignment if AI response fails
 
-15. End-to-End Flow
+## 15. End-to-End Flow
 
 User creates Incident in ServiceNow
 
@@ -231,7 +241,7 @@ Known issues auto-resolved
 
 Incident updated in ServiceNow
 
-16. Final Outcome
+## 16. Final Outcome
 
 This implementation delivers:
 
@@ -241,7 +251,7 @@ This implementation delivers:
 ● Reduced service desk workload
 ● Scalable enterprise ITSM automation
 
-17. Use Cases
+## 17. Use Cases
 
 Intelligent IT Service Desk
 
@@ -253,7 +263,7 @@ NLP-based Incident Routing
 
 Enterprise AI Workflow Automation
 
-18. Future Enhancements
+## 18. Future Enhancements
 
 ● LLM-based classification (GenAI)
 ● Confidence score for predictions
